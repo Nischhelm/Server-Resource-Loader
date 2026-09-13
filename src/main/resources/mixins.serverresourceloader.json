@@ -6,8 +6,13 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
+    "AdvancementManagerMixin",
+    "FunctionManagerMixin",
+    "LootTableManagerMixin",
+    "MinecraftServerMixin",
+    "TemplateManagerMixin"
   ],
   "injectors": {
-    "maxShiftBy": 10
+    "defaultRequire": 1
   }
 }

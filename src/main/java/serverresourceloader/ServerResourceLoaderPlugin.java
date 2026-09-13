@@ -1,47 +1,40 @@
 package serverresourceloader;
 
-import java.util.Map;
-import org.spongepowered.asm.launch.MixinBootstrap;
 import net.minecraftforge.fml.relauncher.IFMLLoadingPlugin;
+import org.spongepowered.asm.launch.MixinBootstrap;
+import org.spongepowered.asm.mixin.Mixins;
+
+import java.util.Map;
 
 @IFMLLoadingPlugin.MCVersion("1.12.2")
 public class ServerResourceLoaderPlugin implements IFMLLoadingPlugin {
 
-	public ServerResourceLoaderPlugin() {
-		MixinBootstrap.init();
-		//Replaced by @MixinConfig.MixinToggle:
+    @Override
+    public String[] getASMTransformerClass() {
+        return new String[0];
+    }
 
-		//False for Vanilla/Coremod mixins, true for regular mod mixins
-		//FermiumRegistryAPI.enqueueMixin(false, "mixins.serverresourceloader.vanilla.json");
+    @Override
+    public String getModContainerClass() {
+        return null;
+    }
 
-		//FermiumRegistryAPI.enqueueMixin(true, "mixins.serverresourceloader.jei.json", () -> Loader.isModLoaded("jei"));
-		//--> Replaced by @MixinConfig.MixinToggle in ForgeConfigHandler. This way is still an option for more complicated conditions
-	}
+    @Override
+    public String getSetupClass() {
+        return null;
+    }
 
-	@Override
-	public String[] getASMTransformerClass()
-	{
-		return new String[0];
-	}
-	
-	@Override
-	public String getModContainerClass()
-	{
-		return null;
-	}
-	
-	@Override
-	public String getSetupClass()
-	{
-		return null;
-	}
-	
-	@Override
-	public void injectData(Map<String, Object> data) { }
-	
-	@Override
-	public String getAccessTransformerClass()
-	{
-		return null;
-	}
+    @Override
+    public void injectData(Map<String, Object> data) {
+        try {
+            Mixins.addConfiguration("mixins." + Tags.MOD_ID + ".json");
+        } catch (NoClassDefFoundError e) {
+            throw new RuntimeException(Tags.MOD_NAME + " requires a mod that provides Mixin, like FermiumBooter, MixinBootstrap, MixinCompat or any other (there's lots)", e);
+        }
+    }
+
+    @Override
+    public String getAccessTransformerClass() {
+        return null;
+    }
 }
