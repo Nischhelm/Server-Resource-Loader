@@ -20,9 +20,14 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class RecipeOverrides {
+
+    /** Removed recipes that CraftingHelperMixin kept forge from loading in the first place */
+    public static final Set<ResourceLocation> SKIPPED = new HashSet<>();
 
     /**
      * Recipes can reference ingredients from the _constants.json of their mod, which forge only loads for the recipes in the mod jar.
@@ -84,7 +89,7 @@ public class RecipeOverrides {
 
         int removed = 0;
         for (ResourceLocation id : ResourceOverrideManager.getRemovedRecipes()) {
-            if (registry.remove(id) != null) {
+            if (registry.remove(id) != null || SKIPPED.contains(id)) {
                 removed++;
                 ServerResourceLoader.LOGGER.debug("Removed recipe: {}", id);
             } else ServerResourceLoader.LOGGER.warn("Could not remove recipe {}, it does not exist", id);

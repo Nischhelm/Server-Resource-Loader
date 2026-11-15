@@ -60,11 +60,19 @@ public class ConfigHandler {
     @Config.Name("Removed Advancements")
     @Config.Comment({
             "Advancements that will be removed entirely, e.g. minecraft:story/mine_stone",
-            "Child advancements of a removed advancement will fail to load as well",
+            "Child advancements of a removed advancement will fail to load as well, unless Remove Child Advancements is enabled",
             "Takes priority over a file in serverresources/advancements for the same advancement"
     })
     @Config.RequiresMcRestart
     public static String[] removedAdvancements = {};
+
+    @Config.Name("Remove Child Advancements")
+    @Config.Comment({
+            "Also removes all child advancements removed advancements.",
+            "Default disabled, so they will fail to load and log an error about their parent missing, should be better for debugging."
+    })
+    @Config.RequiresMcRestart
+    public static boolean removeChildAdvancements = false;
 
     @Config.Name("Removed Functions")
     @Config.Comment({

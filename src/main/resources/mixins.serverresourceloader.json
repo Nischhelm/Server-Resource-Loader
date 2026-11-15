@@ -6,7 +6,9 @@
   "target": "@env(DEFAULT)",
   "minVersion": "0.8",
   "mixins": [
+    "AdvancementBuilderAccessor",
     "AdvancementManagerMixin",
+    "CraftingHelperMixin",
     "FunctionManagerMixin",
     "LootTableManagerMixin",
     "MinecraftServerMixin",
