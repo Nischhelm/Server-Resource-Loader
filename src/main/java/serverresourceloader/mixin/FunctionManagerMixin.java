@@ -33,5 +33,9 @@ public abstract class FunctionManagerMixin {
                 ServerResourceLoader.LOGGER.error("Failed to load function {} from {}", entry.getKey(), entry.getValue(), t);
             }
         }
+        for (ResourceLocation id : ResourceOverrideManager.getRemovedFunctions()) {
+            if (this.functions.remove(id) != null) ServerResourceLoader.LOGGER.debug("Removed function: {}", id);
+            else ServerResourceLoader.LOGGER.warn("Could not remove function {}, it does not exist", id);
+        }
     }
 }

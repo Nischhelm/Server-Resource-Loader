@@ -39,4 +39,38 @@ public class ConfigHandler {
     @Config.Comment("Functions that will not be loaded even if a file for them exists, e.g. mypack:starter_kit")
     @Config.RequiresMcRestart
     public static String[] ignoredFunctions = {};
+
+    @Config.Name("Removed Recipes")
+    @Config.Comment({
+            "Recipes that will be removed entirely, e.g. minecraft:iron_pickaxe",
+            "Takes priority over a file in serverresources/recipes for the same recipe",
+            "The same can be achieved using CraftTweaker."
+    })
+    @Config.RequiresMcRestart
+    public static String[] removedRecipes = {};
+
+    @Config.Name("Removed Loot Tables")
+    @Config.Comment({
+            "Loot tables that will be replaced by an empty loot table, e.g. minecraft:chests/simple_dungeon",
+            "Takes priority over a file in serverresources/loot_tables for the same loot table"
+    })
+    @Config.RequiresMcRestart
+    public static String[] removedLootTables = {};
+
+    @Config.Name("Removed Advancements")
+    @Config.Comment({
+            "Advancements that will be removed entirely, e.g. minecraft:story/mine_stone",
+            "Child advancements of a removed advancement will fail to load as well",
+            "Takes priority over a file in serverresources/advancements for the same advancement"
+    })
+    @Config.RequiresMcRestart
+    public static String[] removedAdvancements = {};
+
+    @Config.Name("Removed Functions")
+    @Config.Comment({
+            "Functions that will be removed entirely, e.g. mypack:starter_kit",
+            "Takes priority over a file in serverresources/functions for the same function"
+    })
+    @Config.RequiresMcRestart
+    public static String[] removedFunctions = {};
 }

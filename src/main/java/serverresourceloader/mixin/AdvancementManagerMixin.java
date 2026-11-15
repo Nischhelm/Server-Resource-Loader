@@ -43,6 +43,10 @@ public abstract class AdvancementManagerMixin {
                 ServerResourceLoader.LOGGER.error("Failed to load advancement override {} from {}, using the default advancement", entry.getKey(), entry.getValue(), e);
             }
         }
+        for (ResourceLocation id : ResourceOverrideManager.getRemovedAdvancements()) {
+            if (advancements.remove(id) != null) ServerResourceLoader.LOGGER.debug("Removed advancement: {}", id);
+            else ServerResourceLoader.LOGGER.warn("Could not remove advancement {}, it does not exist", id);
+        }
         return advancements;
     }
 }

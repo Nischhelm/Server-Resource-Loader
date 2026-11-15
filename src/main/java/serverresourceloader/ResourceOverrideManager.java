@@ -10,7 +10,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Stream;
 
 public class ResourceOverrideManager {
@@ -20,6 +22,11 @@ public class ResourceOverrideManager {
     private static final Map<ResourceLocation, Path> structures = new HashMap<>();
     private static final Map<ResourceLocation, Path> advancements = new HashMap<>();
     private static final Map<ResourceLocation, Path> functions = new HashMap<>();
+
+    private static final Set<ResourceLocation> removedRecipes = new HashSet<>();
+    private static final Set<ResourceLocation> removedLootTables = new HashSet<>();
+    private static final Set<ResourceLocation> removedAdvancements = new HashSet<>();
+    private static final Set<ResourceLocation> removedFunctions = new HashSet<>();
 
     public static final File DIRECTORY = new File("serverresources");
 
@@ -32,6 +39,21 @@ public class ResourceOverrideManager {
 
         ServerResourceLoader.LOGGER.info("Found {} recipe, {} loot table, {} structure, {} advancement and {} function overrides in {}",
                 recipes.size(), lootTables.size(), structures.size(), advancements.size(), functions.size(), DIRECTORY.getAbsolutePath());
+
+        parseRemoved("recipe", ConfigHandler.removedRecipes, removedRecipes);
+        parseRemoved("loot table", ConfigHandler.removedLootTables, removedLootTables);
+        parseRemoved("advancement", ConfigHandler.removedAdvancements, removedAdvancements);
+        parseRemoved("function", ConfigHandler.removedFunctions, removedFunctions);
+    }
+
+    private static void parseRemoved(String type, String[] entries, Set<ResourceLocation> removed) {
+        removed.clear();
+        Arrays.stream(entries)
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .map(ResourceLocation::new)
+                .forEach(removed::add);
+        if (!removed.isEmpty()) ServerResourceLoader.LOGGER.info("Removing {} {}(s) via config", removed.size(), type);
     }
 
     /**
@@ -86,5 +108,21 @@ public class ResourceOverrideManager {
 
     public static Map<ResourceLocation, Path> getFunctions() {
         return functions;
+    }
+
+    public static Set<ResourceLocation> getRemovedRecipes() {
+        return removedRecipes;
+    }
+
+    public static boolean isLootTableRemoved(ResourceLocation id) {
+        return removedLootTables.contains(id);
+    }
+
+    public static Set<ResourceLocation> getRemovedAdvancements() {
+        return removedAdvancements;
+    }
+
+    public static Set<ResourceLocation> getRemovedFunctions() {
+        return removedFunctions;
     }
 }

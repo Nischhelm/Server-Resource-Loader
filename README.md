@@ -37,3 +37,5 @@ serverresources/
 Includes a toggleable fix for [MC-83039](https://bugs.mojang.com/browse/MC-83039), where end city chests are sometimes replaced by air. This will write a file into `structures/`.
 
 If you want to put files into `serverresources/` that aren't supposed to be used (yet), you can use the config entries `Ignored xyz`.
+
+To remove recipes, loot tables, advancements or functions entirely, list their ids in the config entries `Removed xyz`. Removed loot tables are replaced by an empty loot table. A removal takes priority over an override file for the same id. Structure templates can't be removed, as world generation expects them to exist; override them with an empty template instead.

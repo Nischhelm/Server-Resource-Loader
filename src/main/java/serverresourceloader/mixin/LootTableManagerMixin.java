@@ -30,6 +30,14 @@ public abstract class LootTableManagerMixin {
     // Puts the override into the vanilla cache before vanilla would load its own table into it
     @Inject(method = "getLootTableFromLocation", at = @At("HEAD"))
     private void serverresourceloader$loadLootTableOverride(ResourceLocation id, CallbackInfoReturnable<LootTable> cir) {
+        if (ResourceOverrideManager.isLootTableRemoved(id)) {
+            if (this.registeredLootTables.getIfPresent(id) == null) {
+                this.registeredLootTables.put(id, LootTable.EMPTY_LOOT_TABLE);
+                ServerResourceLoader.LOGGER.debug("Removed loot table: {}", id);
+            }
+            return;
+        }
+
         Path path = ResourceOverrideManager.getLootTable(id);
         if (path == null || this.registeredLootTables.getIfPresent(id) != null) return;
 

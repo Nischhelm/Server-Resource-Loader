@@ -82,8 +82,16 @@ public class RecipeOverrides {
         }
         Loader.instance().setActiveModContainer(activeMod);
 
+        int removed = 0;
+        for (ResourceLocation id : ResourceOverrideManager.getRemovedRecipes()) {
+            if (registry.remove(id) != null) {
+                removed++;
+                ServerResourceLoader.LOGGER.debug("Removed recipe: {}", id);
+            } else ServerResourceLoader.LOGGER.warn("Could not remove recipe {}, it does not exist", id);
+        }
+
         // the client recipe book was already built when forge loaded the recipes
         FMLCommonHandler.instance().resetClientRecipeBook();
-        ServerResourceLoader.LOGGER.info("Loaded recipe overrides: {} replaced, {} new", replaced, added);
+        ServerResourceLoader.LOGGER.info("Loaded recipe overrides: {} replaced, {} new, {} removed", replaced, added, removed);
     }
 }
